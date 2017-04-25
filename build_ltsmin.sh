@@ -26,8 +26,7 @@ export SYLVAN_URL="https://github.com/trolando/sylvan/archive/v$SYLVAN_VERSION.t
 export SYLVAN_NAME="sylvan-$SYLVAN_VERSION" &&
 export MCRL2_NAME="mCRL2.tar.gz" &&
 export MCRL2_URL="https://raw.githubusercontent.com/utwente-fmt/ltsmin-travis/master/$TRAVIS_OS_NAME/$MCRL2_NAME" &&
-export PKG_CONFIG_PATH="$HOME/ltsmin-deps/lib/pkgconfig"
-
+export PKG_CONFIG_PATH="$HOME/ltsmin-deps/lib/pkgconfig:$HOME/ltsmin-deps/lib64/pkgconfig"
 export PROB_NAME="ProB.linux64.tar.gz" &&
 export PROB_URL="https://raw.githubusercontent.com/utwente-fmt/ltsmin-travis/master/linux/$PROB_NAME" &&        
 export PATH=/opt/ghc/$GHCVER/bin:/opt/happy/$HAPPYVER/bin:$PATH &&
@@ -42,7 +41,7 @@ export C_INCLUDE_PATH="$HOME/ltsmin-deps/include:$C_INCLUDE_PATH"
 export LD_LIBRARY_PATH="$HOME/ltsmin-deps/lib:$HOME/ProB/lib:$LD_LIBRARY_PATH"
 
 # install Sylvan from source
-if [ ! -f "$HOME/ltsmin-deps/lib/libsylvan.a" ]; then
+if [ ! -f "$HOME/ltsmin-deps/lib64/libsylvan.a" ]; then
     mkdir sylvan && cd sylvan &&
     wget "$SYLVAN_URL" &&
     tar -xf "v$SYLVAN_VERSION.tar.gz" &&
@@ -54,8 +53,6 @@ if [ ! -f "$HOME/ltsmin-deps/lib/libsylvan.a" ]; then
     make install &&
     cd ../..; 
 fi
-
-exit 0
     
 # install zmq from source, since libzmq3-dev in apt is missing dependencies for a full static LTSmin build (pgm and sodium are missing)
 # I filed a bug report here: https://github.com/travis-ci/travis-ci/issues/5701
@@ -85,11 +82,12 @@ if [ ! -f "$HOME/ltsmin-deps/lib/libczmq.a" ]; then
     popd; 
 fi
 
- # install mCRL2
-if [ ! -f "$HOME/ltsmin-deps/lib/libmcrl2_core.a" ]; then 
-    wget "$MCRL2_URL" -P "$HOME/ltsmin-deps" &&    
-    tar -xf "$HOME/ltsmin-deps/$MCRL2_NAME" -C "$HOME/ltsmin-deps"; 
-fi
+# install mCRL2
+#if [ ! -f "$HOME/ltsmin-deps/lib/libmcrl2_core.a" ]; then 
+#    wget "$MCRL2_URL" -P "$HOME/ltsmin-deps" &&    
+#    tar -xf "$HOME/ltsmin-deps/$MCRL2_NAME" -C "$HOME/ltsmin-deps"; 
+#fi
+
     
 # install ProB
 if [ ! -f "$HOME/ProB/probcli" ]; then
@@ -98,10 +96,12 @@ if [ ! -f "$HOME/ProB/probcli" ]; then
 fi
 
   # install Divine2
-if [ ! -f "$HOME/ltsmin-deps/bin/divine" ]; then
-    wget "$DIVINE_URL" -P /tmp &&
-    tar -xf "/tmp/$DIVINE_NAME" -C "$HOME/ltsmin-deps"; 
-fi
+#if [ ! -f "$HOME/ltsmin-deps/bin/divine" ]; then
+#    wget "$DIVINE_URL" -P /tmp &&
+#    tar -xf "/tmp/$DIVINE_NAME" -C "$HOME/ltsmin-deps"; 
+#fi
+
+
   
   # install ViennaCL on linux
 if [ ! -d "$HOME/ltsmin-deps/include/viennacl" -a "$TRAVIS_OS_NAME" = "linux" ]; then
@@ -138,7 +138,7 @@ cd ltsmin*
 # CPPFLAGS='-I%system.pkg64.libboost.path%/include' LDFLAGS='-L%system.pkg64.libboost.path%/lib' VALGRIND=false
 ./ltsminreconf &&
 ./configure --prefix=$IFOLDER --with-viennacl="$HOME/ltsmin-deps/include" --without-scoop $CONFIGURE_WITH
-make LDFLAGS="-L$HOME/static-libs -static-libgcc -static-libstdc++"
+make LDFLAGS="-L$HOME/static-libs -L$HOME/ltsmin-deps/lib/ -L$HOME/ltsmin-deps/lib64/ -static-libgcc -static-libstdc++"
 
 if [ -n $TRAVIS_TAG -a "x$RELEASE_BUILD" = "xyes" ]; then
     make install &&
