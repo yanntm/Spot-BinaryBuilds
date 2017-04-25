@@ -1,4 +1,6 @@
 
+language : python
+
 addons:
   apt:
     sources: ['ubuntu-toolchain-r-test']
@@ -17,6 +19,7 @@ before_script:
 script :
   - ./tag.sh
   - ./build_spot.sh
+  - ./build_ltsmin.sh
 
 deploy:
   provider: pages
