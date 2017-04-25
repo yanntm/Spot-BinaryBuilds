@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # file based on .travis.yml of ltsmin project
-export CONFIGURE_WITH="--disable-dependency-tracking --enable-werror --disable-test-all"
+export CONFIGURE_WITH="--disable-dependency-tracking --disable-test-all"
 export CFLAGS="-DNDEBUG -O2"
 export RELEASE_BUILD="yes"
 
@@ -140,20 +140,18 @@ cd ltsmin*
 ./configure --prefix=$IFOLDER --with-viennacl="$HOME/ltsmin-deps/include" --without-scoop $CONFIGURE_WITH
 make LDFLAGS="-L$HOME/static-libs -L$HOME/ltsmin-deps/lib/ -L$HOME/ltsmin-deps/lib64/ -static-libgcc -static-libstdc++"
 
-if [ -n $TRAVIS_TAG -a "x$RELEASE_BUILD" = "xyes" ]; then
-    make install &&
-    cp "$HOME/ltsmin-deps/bin/divine" /tmp/dist/bin &&
-    cp "$HOME/ltsmin-deps/bin/txt2lps" /tmp/dist/bin &&
-    cp "$HOME/ltsmin-deps/bin/txt2pbes" /tmp/dist/bin &&
-    export distname="ltsmin-$TRAVIS_TAG-$TRAVIS_OS_NAME" &&
-    pushd /tmp/dist &&
-    tar cfz "$distname.tgz" * &&
-    popd &&
-    make dist &&
-    export LTSMIN_VERSION=$(grep "PACKAGE_VERSION" src/hre/config.h | cut -d" " -f3 | cut -d\" -f2) &&
-    mv "ltsmin-$LTSMIN_VERSION.tar.gz" "ltsmin-$TRAVIS_TAG-source.tgz";
+make install &&
+cp "$HOME/ltsmin-deps/bin/divine" /tmp/dist/bin &&
+cp "$HOME/ltsmin-deps/bin/txt2lps" /tmp/dist/bin &&
+cp "$HOME/ltsmin-deps/bin/txt2pbes" /tmp/dist/bin &&
+export distname="ltsmin-$TRAVIS_TAG-$TRAVIS_OS_NAME" &&
+pushd /tmp/dist &&
+tar cfz "$distname.tgz" * &&
+popd &&
+make dist &&
+export LTSMIN_VERSION=$(grep "PACKAGE_VERSION" src/hre/config.h | cut -d" " -f3 | cut -d\" -f2) &&
+mv "ltsmin-$LTSMIN_VERSION.tar.gz" "ltsmin-$TRAVIS_TAG-source.tgz";
 #    cp  "ltsmin-$TRAVIS_TAG-source.tgz" ../website/ltsmin-
-fi
 
 cd $IFOLDER
 
