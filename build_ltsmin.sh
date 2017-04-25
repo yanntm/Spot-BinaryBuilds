@@ -136,8 +136,11 @@ cd lts_install_dir
 export IFOLDER=$(pwd)
 cd ..
 
-wget https://github.com/utwente-fmt/ltsmin/releases/download/3.0/ltsmin-3.0-source.tgz
-tar zxvf ltsmin-3.0-source.tgz
+export VER=2.1
+#wget https://github.com/utwente-fmt/ltsmin/releases/download/$VER/ltsmin-$VER-source.tgz
+#tar zxvf ltsmin-$VER-source.tgz
+wget https://github.com/utwente-fmt/ltsmin/releases/download/2.1/ltsmin-2.1.tar.gz
+tar zxvf ltsmin-$VER.tar.gz
 
 cd ltsmin*
 
