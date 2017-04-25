@@ -25,6 +25,6 @@ make install DESTDIR=$IFOLDER
 
 cd ../install_dir
 
-tar cfvz ../spot_linux_64.tar.gz *
+tar cfvz ../website/spot_linux_64.tar.gz *
 
-cp spot_linux_64.tar.gz ../website
+cd ..
