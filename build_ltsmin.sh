@@ -1,8 +1,10 @@
 #! /bin/bash
 
+set -x
+
 mkdir dep_dir
 cd dep_dir
-export $DEPFOLDER=$(pwd)
+export DEPFOLDER=$(pwd)
 cd ..
 
 # file based on .travis.yml of ltsmin project
@@ -47,11 +49,11 @@ export LD_LIBRARY_PATH="$DEPFOLDER/lib:$HOME/ProB/lib:$LD_LIBRARY_PATH"
 
 # install Sylvan from source
 if [ ! -f "$DEPFOLDER/lib64/libsylvan.a" ]; then
-    mkdir sylvan && cd sylvan &&
+    mkdir -p sylvan && cd sylvan &&
     wget "$SYLVAN_URL" &&
     tar -xf "v$SYLVAN_VERSION.tar.gz" &&
     cd sylvan-$SYLVAN_VERSION &&
-    mkdir build &&
+    mkdir -p build &&
     cd build &&
     cmake .. -DBUILD_SHARED_LIBS=OFF -DSYLVAN_BUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX="$DEPFOLDER" &&
     make &&
@@ -118,15 +120,15 @@ fi
 # Move static libraries to a special folder 
 # During make we can force ld to look in this directory first.
 # Now do the same on Linux.
-mkdir "$HOME/static-libs" &&
-cp "$DEPFOLDER/lib/libzmq.a" "$HOME/static-libs" &&
-cp "$DEPFOLDER/lib/libczmq.a" "$HOME/static-libs" &&
-cp /usr/lib/libnuma.a "$HOME/static-libs" &&
-cp /usr/lib/x86_64-linux-gnu/libpopt.a "$HOME/static-libs" &&
-cp /usr/lib/x86_64-linux-gnu/libgmp.a "$HOME/static-libs" &&
-cp /usr/lib/x86_64-linux-gnu/libltdl.a "$HOME/static-libs" &&
-cp /usr/lib/x86_64-linux-gnu/libxml2.a "$HOME/static-libs" &&
-cp /usr/lib/x86_64-linux-gnu/libz.a "$HOME/static-libs";
+mkdir "$DEPFOLDER/static-libs" &&
+cp "$DEPFOLDER/lib/libzmq.a" "$DEPFOLDER/static-libs" &&
+cp "$DEPFOLDER/lib/libczmq.a" "$DEPFOLDER/static-libs" &&
+cp /usr/lib/libnuma.a "$DEPFOLDER/static-libs" &&
+cp /usr/lib/x86_64-linux-gnu/libpopt.a "$DEPFOLDER/static-libs" &&
+cp /usr/lib/x86_64-linux-gnu/libgmp.a "$DEPFOLDER/static-libs" &&
+cp /usr/lib/x86_64-linux-gnu/libltdl.a "$DEPFOLDER/static-libs" &&
+cp /usr/lib/x86_64-linux-gnu/libxml2.a "$DEPFOLDER/static-libs" &&
+cp /usr/lib/x86_64-linux-gnu/libz.a "$DEPFOLDER/static-libs";
 
 
 mkdir lts_install_dir
@@ -139,23 +141,20 @@ tar zxvf ltsmin-3.0-source.tgz
 
 cd ltsmin*
 
-
 # CPPFLAGS='-I%system.pkg64.libboost.path%/include' LDFLAGS='-L%system.pkg64.libboost.path%/lib' VALGRIND=false
 ./ltsminreconf &&
 ./configure --prefix=$IFOLDER --with-viennacl="$DEPFOLDER/include" --without-scoop $CONFIGURE_WITH
-make LDFLAGS="-L$HOME/static-libs -L$DEPFOLDER/lib/ -L$DEPFOLDER/lib64/ -static-libgcc -static-libstdc++"
+make LDFLAGS="-L$DEPFOLDER/static-libs -L$DEPFOLDER/lib/ -L$DEPFOLDER/lib64/ -static-libgcc -static-libstdc++"
 
-make install &&
-cp "$DEPFOLDER/bin/divine" /tmp/dist/bin &&
-cp "$DEPFOLDER/bin/txt2lps" /tmp/dist/bin &&
-cp "$DEPFOLDER/bin/txt2pbes" /tmp/dist/bin &&
-export distname="ltsmin-$TRAVIS_TAG-$TRAVIS_OS_NAME" &&
-pushd /tmp/dist &&
-tar cfz "$distname.tgz" * &&
-popd &&
-make dist &&
-export LTSMIN_VERSION=$(grep "PACKAGE_VERSION" src/hre/config.h | cut -d" " -f3 | cut -d\" -f2) &&
-mv "ltsmin-$LTSMIN_VERSION.tar.gz" "ltsmin-$TRAVIS_TAG-source.tgz";
+make install 
+# cp "$DEPFOLDER/bin/divine" /tmp/dist/bin &&
+# cp "$DEPFOLDER/bin/txt2lps" /tmp/dist/bin 
+# cp "$DEPFOLDER/bin/txt2pbes" /tmp/dist/bin &&
+
+export distname="ltsmin-$TRAVIS_TAG-$TRAVIS_OS_NAME" 
+
+export LTSMIN_VERSION=$(grep "PACKAGE_VERSION" src/hre/config.h | cut -d" " -f3 | cut -d\" -f2) 
+# mv "ltsmin-$LTSMIN_VERSION.tar.gz" "ltsmin-$TRAVIS_TAG-source.tgz";
 #    cp  "ltsmin-$TRAVIS_TAG-source.tgz" ../website/ltsmin-
 
 cd $IFOLDER
