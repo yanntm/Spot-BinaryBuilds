@@ -11,7 +11,7 @@ cd spot-*
 
 make -j2
 
-make check -j2
+# make check -j2
 
 cd ..
 
