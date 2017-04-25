@@ -1,0 +1,30 @@
+
+addons:
+  apt:
+    sources: ['ubuntu-toolchain-r-test']
+    packages: ['g++-5', 'gcc-5', 'expat', 'libgmp-dev']
+  env: GCCVER='5' CXX_COMPILER='g++-5' C_COMPILER='gcc-5'
+
+
+before_script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - export CXX=${CXX_COMPILER}
+  - export CC=${C_COMPILER}
+  - export AR=gcc-ar-${GCCVER}
+  - export RANLIB=gcc-ranlib-${GCCVER}
+  - export NM=gcc-nm-${GCCVER}
+
+# build spot
+script :
+  - ./tag.sh
+  - ./build_spot.sh
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+  local_dir: website/
+  upload-dir: build/$TRAVIS_BUILD_NUMBER
+  on:
+    branch: master
+  
