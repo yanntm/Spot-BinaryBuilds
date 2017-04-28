@@ -1,11 +1,8 @@
 /sylvan/
 /spot-*/
 /install_dir/
-/spot-snapshot.tar.gz
-/spot_linux_64.tar.gz
-/ltsmin-3.0/
+/*.tar.gz
 /lts_install_dir/
 /dep_dir/
-/ltsmin-3.0-source.tgz
-/ltsmin-2.1/
+/ltsmin-*/
 **/*~
