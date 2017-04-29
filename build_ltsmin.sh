@@ -160,8 +160,8 @@ export LTSMIN_VERSION=$(grep "PACKAGE_VERSION" src/hre/config.h | cut -d" " -f3 
 # mv "ltsmin-$LTSMIN_VERSION.tar.gz" "ltsmin-$TRAVIS_TAG-source.tgz";
 #    cp  "ltsmin-$TRAVIS_TAG-source.tgz" ../website/ltsmin-
 
-cd $IFOLDER
+pushd $IFOLDER
 
-tar cfvz ../website/ltsmin_linux_64.tar.gz *
+tar cfvz ~/website/ltsmin_linux_64.tar.gz *
 
-cd ..
+popd
