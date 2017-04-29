@@ -2,7 +2,7 @@
 
 wget  --no-check-certificate https://teamcity.lrde.epita.fr/guestAuth/repository/download/bt18/.lastSuccessful/spot-snapshot.tar.gz
 
-tar zxvf spot-snapshot.tar.gz
+tar zxf spot-snapshot.tar.gz
 
 cd spot-*
 ./configure -C VALGRIND=false
@@ -25,6 +25,6 @@ make install DESTDIR=$IFOLDER
 
 cd ../install_dir
 
-tar cfvz ../website/spot_linux_64.tar.gz *
+tar cfz ../website/spot_linux_64.tar.gz *
 
 cd ..
