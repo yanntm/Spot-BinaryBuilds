@@ -2,6 +2,8 @@
 
 set -x
 
+export ROOTDIR=$(pwd)
+
 mkdir dep_dir
 cd dep_dir
 export DEPFOLDER=$(pwd)
@@ -162,6 +164,6 @@ export LTSMIN_VERSION=$(grep "PACKAGE_VERSION" src/hre/config.h | cut -d" " -f3 
 
 pushd $IFOLDER
 
-tar cfvz ~/website/ltsmin_linux_64.tar.gz *
+tar cfvz $ROOTDIR/website/ltsmin_linux_64.tar.gz *
 
 popd
