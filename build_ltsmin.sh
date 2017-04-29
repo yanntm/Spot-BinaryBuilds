@@ -164,6 +164,9 @@ export LTSMIN_VERSION=$(grep "PACKAGE_VERSION" src/hre/config.h | cut -d" " -f3 
 
 pushd $IFOLDER
 
+pwd
+ls -la $ROOTDIR/website
+ls $ROOTDIR
 tar cfvz $ROOTDIR/website/ltsmin_linux_64.tar.gz *
 
 popd
