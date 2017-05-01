@@ -60,7 +60,7 @@ if [ ! -f "$DEPFOLDER/lib64/libsylvan.a" ]; then
     cmake .. -DBUILD_SHARED_LIBS=OFF -DSYLVAN_BUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX="$DEPFOLDER" &&
     make &&
     make install &&
-    cd ../..; 
+    cd ../../..; 
 fi
     
 # install zmq from source, since libzmq3-dev in apt is missing dependencies for a full static LTSmin build (pgm and sodium are missing)
