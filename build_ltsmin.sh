@@ -132,11 +132,12 @@ cp /usr/lib/x86_64-linux-gnu/libltdl.a "$DEPFOLDER/static-libs" &&
 cp /usr/lib/x86_64-linux-gnu/libxml2.a "$DEPFOLDER/static-libs" &&
 cp /usr/lib/x86_64-linux-gnu/libz.a "$DEPFOLDER/static-libs";
 
-
+pushd $ROOTDIR
 mkdir lts_install_dir
 cd lts_install_dir
 export IFOLDER=$(pwd)
-cd ..
+
+popd
 
 export VER=2.1
 #wget https://github.com/utwente-fmt/ltsmin/releases/download/$VER/ltsmin-$VER-source.tgz
