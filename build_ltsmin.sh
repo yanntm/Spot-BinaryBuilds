@@ -140,10 +140,17 @@ export IFOLDER=$(pwd)
 popd
 
 export VER=2.1
-#wget https://github.com/utwente-fmt/ltsmin/releases/download/$VER/ltsmin-$VER-source.tgz
-#tar zxvf ltsmin-$VER-source.tgz
-wget https://github.com/utwente-fmt/ltsmin/releases/download/2.1/ltsmin-2.1.tar.gz
-tar zxvf ltsmin-$VER.tar.gz
+#export CFLAGS="-g -O0"
+# -DLTSMIN_DEBUG"
+
+if [ ! -d ltsmin-2.1 ]; then 
+    #wget https://github.com/utwente-fmt/ltsmin/releases/download/$VER/ltsmin-$VER-source.tgz
+    #tar zxvf ltsmin-$VER-source.tgz
+    if [ ! -f ltsmin-2.1.tar.gz ]; then
+		wget https://github.com/utwente-fmt/ltsmin/releases/download/2.1/ltsmin-2.1.tar.gz
+    fi
+    tar zxvf ltsmin-$VER.tar.gz
+fi
 
 cd ltsmin*
 
