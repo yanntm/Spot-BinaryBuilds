@@ -6,7 +6,7 @@ tar zxf spot-snapshot.tar.gz
 rm spot-snapshot.tar.gz
 
 cd spot-*
-./configure -C VALGRIND=false --without-included-lbtt --disable-shared --disable-python
+./configure -C VALGRIND=false --without-included-lbtt --disable-devel --disable-shared --disable-python
 
 # CPPFLAGS='-I%system.pkg64.libboost.path%/include' LDFLAGS='-L%system.pkg64.libboost.path%/lib' VALGRIND=false
 
@@ -25,7 +25,8 @@ cd ../spot-*
 make install DESTDIR=$IFOLDER
 
 cd ../install_dir
+ls -lah
 
-tar cfz ../website/spot_linux_64.tar.gz *
+tar cfz ../website/spot_windows.tar.gz *
 
 cd ..
