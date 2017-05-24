@@ -25,8 +25,10 @@ cd ../spot-*
 make install DESTDIR=$IFOLDER
 
 cd ../install_dir
+\rm -rf bin/ share/ lib64/
+
 ls -lah
 
-tar cfz ../website/spot_windows.tar.gz *
+tar cfz ../website/spot_linux.tar.gz *
 
 cd ..
