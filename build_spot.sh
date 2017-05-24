@@ -6,7 +6,7 @@ tar zxf spot-snapshot.tar.gz
 rm spot-snapshot.tar.gz
 
 cd spot-*
-./configure -C VALGRIND=false
+./configure -C VALGRIND=false --without-included-lbtt --disable-shared --disable-python
 
 # CPPFLAGS='-I%system.pkg64.libboost.path%/include' LDFLAGS='-L%system.pkg64.libboost.path%/lib' VALGRIND=false
 
