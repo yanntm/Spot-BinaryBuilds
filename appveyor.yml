@@ -18,7 +18,7 @@ environment :
 
  
 artifacts:
-  - path: website/spot_linux_64.tar.gz
-    name: spot_linux_64.tar.gz
+  - path: website/spot_windows.tar.gz
+    name: spot_windows.tar.gz
 
       
