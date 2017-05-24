@@ -20,6 +20,7 @@ script :
   - ./tag.sh
   - ./build_spot.sh
   - ./build_ltsmin.sh
+  - ls -lah website/
 
 deploy:
   provider: pages
