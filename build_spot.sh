@@ -6,9 +6,12 @@ tar zxf spot-snapshot.tar.gz
 rm spot-snapshot.tar.gz
 
 mkdir install_dir
-cd install_dir
+mkdir install_dir/usr
+mkdir install_dir/usr/local
+
+cd install_dir/usr/local/
 export IFOLDER=$(pwd)
-cd ../spot-*
+cd ../../../spot-*
 
 ./configure -C VALGRIND=false --without-included-lbtt --disable-devel --disable-shared --disable-python --prefix=$IFOLDER
 
