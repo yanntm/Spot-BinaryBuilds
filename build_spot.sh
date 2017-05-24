@@ -25,7 +25,10 @@ cd ../spot-*
 make install DESTDIR=$IFOLDER
 
 cd ../install_dir
+
+cd usr/local/
 \rm -rf bin/ share/ lib64/
+cd ../..
 
 ls -lah
 
