@@ -5,7 +5,7 @@ clone_depth: 30
 
 build_script :
  - C:\MinGW\bin\mingw-get install libgmpxx
- - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; ./build_spot.sh"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; ./build_spot.sh && mv website/spot_linux.tar.gz website/spot_windows.tar.gz"'
  - DIR
 
 # - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; 7z a -tzip windows.zip usr/ "'
