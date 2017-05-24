@@ -1,6 +1,6 @@
 #! /bin/bash
 
-wget  --no-check-certificate https://teamcity.lrde.epita.fr/guestAuth/repository/download/bt18/.lastSuccessful/spot-snapshot.tar.gz
+wget --progress=dot:mega --no-check-certificate https://teamcity.lrde.epita.fr/guestAuth/repository/download/bt18/.lastSuccessful/spot-snapshot.tar.gz
 
 tar zxf spot-snapshot.tar.gz
 rm spot-snapshot.tar.gz
