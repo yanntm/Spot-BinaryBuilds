@@ -52,7 +52,7 @@ export LD_LIBRARY_PATH="$DEPFOLDER/lib:$HOME/ProB/lib:$LD_LIBRARY_PATH"
 # install Sylvan from source
 if [ ! -f "$DEPFOLDER/lib64/libsylvan.a" ]; then
     mkdir -p sylvan && cd sylvan &&
-    wget "$SYLVAN_URL" &&
+    wget --progress=dot:mega "$SYLVAN_URL" &&
     tar -xf "v$SYLVAN_VERSION.tar.gz" &&
     cd sylvan-$SYLVAN_VERSION &&
     mkdir -p build &&
@@ -139,18 +139,20 @@ export IFOLDER=$(pwd)
 
 popd
 
-export VER=2.1
+#export VER=2.1
+export VER=3.0
 #export CFLAGS="-g -O0"
 # -DLTSMIN_DEBUG"
 
-if [ ! -d ltsmin-2.1 ]; then 
-    #wget https://github.com/utwente-fmt/ltsmin/releases/download/$VER/ltsmin-$VER-source.tgz
-    #tar zxvf ltsmin-$VER-source.tgz
-    if [ ! -f ltsmin-2.1.tar.gz ]; then
-		wget https://github.com/utwente-fmt/ltsmin/releases/download/2.1/ltsmin-2.1.tar.gz
-    fi
-    tar zxvf ltsmin-$VER.tar.gz
-fi
+wget --progress=dot:mega https://github.com/utwente-fmt/ltsmin/releases/download/$VER/ltsmin-$VER-source.tgz
+tar zxvf ltsmin-$VER-source.tgz
+
+#	if [ ! -d ltsmin-2.1 ]; then     
+#	    if [ ! -f ltsmin-2.1.tar.gz ]; then
+#		wget https://github.com/utwente-fmt/ltsmin/releases/download/2.1/ltsmin-2.1.tar.gz
+#	    fi
+#	    tar zxvf ltsmin-$VER.tar.gz
+#	fi
 
 cd ltsmin*
 
