@@ -3,8 +3,8 @@ language : python
 
 addons:
   apt:
-    sources: ['ubuntu-toolchain-r-test', 'hvr-ghc', 'george-edison55-precise-backports', 'ppa:dns/gnu']   # ge-55 : CMake, ppa:dns/gnu : autmake 1.14
-    packages: ['g++-5', 'gcc-5', 'expat', 'libgmp-dev', 'libpopt-dev', 'asciidoc', 'xmlto', 'doxygen', 'libboost-dev', 'ghc-7.10.3', 'ghc-7.10.3-dyn', 'happy-1.19.5', 'libnuma-dev', 'liblzma-dev', 'dejagnu', 'libhwloc-dev', 'cmake', 'cmake-data' ,'automake', 'autoconf', 'libtool']
+    sources: ['ubuntu-toolchain-r-test', 'hvr-ghc', 'george-edison55-precise-backports' ]   # ge-55 : CMake
+    packages: ['g++-5', 'gcc-5', 'expat', 'libgmp-dev', 'libpopt-dev', 'asciidoc', 'xmlto', 'doxygen', 'libboost-dev', 'ghc-7.10.3', 'ghc-7.10.3-dyn', 'happy-1.19.5', 'libnuma-dev', 'liblzma-dev', 'dejagnu', 'libhwloc-dev', 'cmake', 'cmake-data']
     
 before_script:
   - cd ${TRAVIS_BUILD_DIR}
