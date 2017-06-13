@@ -197,6 +197,5 @@ cd lts_install_dir/bin ; mkdir pp ; \rm *-dist *-sym pins2torx ; mv pins2* pp/ ;
 tar czvf ltsmin_linux_64.tar.gz lts_install_dir/
 cp ltsmin_linux_64.tar.gz website/
 ls
-ls -lah website
+ls -lah website/
 
-popd
