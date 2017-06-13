@@ -165,7 +165,7 @@ git clone https://github.com/utwente-fmt/ltl2ba.git --branch master --single-bra
 cd ..
 
 # travis does not have automake 1.14 available, does not matter much 
-cat configure.ac | sed 's/1\.14/1.11/' > conf.bak ; \mv conf.bak configure.ac
+cat configure.ac | sed 's/1\.14/1.11/' | grep -v 'AX_PROG_BISON_VERSION' > conf.bak ; \mv conf.bak configure.ac
 
 # CPPFLAGS='-I%system.pkg64.libboost.path%/include' LDFLAGS='-L%system.pkg64.libboost.path%/lib' VALGRIND=false
 
