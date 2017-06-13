@@ -139,22 +139,27 @@ export IFOLDER=$(pwd)
 
 popd
 
-#export VER=2.1
-export VER=3.0
-#export CFLAGS="-g -O0"
-# -DLTSMIN_DEBUG"
 
-wget --progress=dot:mega https://github.com/utwente-fmt/ltsmin/releases/download/$VER/ltsmin-$VER-source.tgz
-tar zxvf ltsmin-$VER-source.tgz
 
-#	if [ ! -d ltsmin-2.1 ]; then     
-#	    if [ ! -f ltsmin-2.1.tar.gz ]; then
-#		wget https://github.com/utwente-fmt/ltsmin/releases/download/2.1/ltsmin-2.1.tar.gz
-#	    fi
-#	    tar zxvf ltsmin-$VER.tar.gz
-#	fi
+##export VER=2.1
+#export VER=3.0
+##export CFLAGS="-g -O0"
+## -DLTSMIN_DEBUG"
+#
+#wget --progress=dot:mega https://github.com/utwente-fmt/ltsmin/releases/download/$VER/ltsmin-$VER-source.tgz
+#tar zxvf ltsmin-$VER-source.tgz
+#
+##	if [ ! -d ltsmin-2.1 ]; then     
+##	    if [ ! -f ltsmin-2.1.tar.gz ]; then
+##		wget https://github.com/utwente-fmt/ltsmin/releases/download/2.1/ltsmin-2.1.tar.gz
+##	    fi
+##	    tar zxvf ltsmin-$VER.tar.gz
+##	fi
+#
 
-cd ltsmin*
+mkdir ltsmin
+cd ltsmin
+git clone https://github.com/utwente-fmt/ltsmin.git --branch next --single-branch .
 
 # CPPFLAGS='-I%system.pkg64.libboost.path%/include' LDFLAGS='-L%system.pkg64.libboost.path%/lib' VALGRIND=false
 ./ltsminreconf &&
