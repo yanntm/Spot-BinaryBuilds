@@ -64,36 +64,37 @@ export LD_LIBRARY_PATH="$DEPFOLDER/lib:$LD_LIBRARY_PATH"
 #fi
 #
 
-    
-# install zmq from source, since libzmq3-dev in apt is missing dependencies for a full static LTSmin build (pgm and sodium are missing)
-# I filed a bug report here: https://github.com/travis-ci/travis-ci/issues/5701
-if [ ! -f "$DEPFOLDER/lib/libzmq.a" ]; then 
-    wget "$ZMQ_URL" -P /tmp &&
-    tar -xf "/tmp/$ZMQ_NAME.tar.gz" -C /tmp &&
-    pushd /tmp/$ZMQ_NAME &&
-    ./autogen.sh &&
-    ./configure --enable-static --enable-shared --prefix="$DEPFOLDER" --without-libsodium --without-pgm --without-documentation &&
-    make &&
-    make install &&
-    popd; 
-    rm -rf /tmp/$ZMQ_NAME /tmp/$ZMQ_NAME.tar.gz
-fi
-
-# install czmq from source
-# since czmq is not distributed in Ubuntu.
-# the LDFLAGS is necessary, because of a bug: https://github.com/zeromq/czmq/issues/1323
-# the CFLAGS is necessary, because we need to unset NDEBUG: https://github.com/zeromq/czmq/issues/1519
-if [ ! -f "$DEPFOLDER/lib/libczmq.a" ]; then 
-    wget "$CZMQ_URL" -P /tmp &&
-    tar -xf "/tmp/v$CZMQ_VERSION.tar.gz" -C /tmp &&
-    pushd /tmp/czmq-$CZMQ_VERSION &&
-    ./autogen.sh &&
-    ./configure --enable-static --enable-shared --prefix="$DEPFOLDER" --with-libzmq="$DEPFOLDER" &&
-    make CFLAGS="" LDFLAGS="-lpthread" &&
-    make install &&
-    popd; 
-    rm -rf /tmp/$CZMQ_NAME /tmp/v$CZMQ_VERSION.tar.gz
-fi
+# ZMQ/CZMQ is for PROB frontend    
+## install zmq from source, since libzmq3-dev in apt is missing dependencies for a full static LTSmin build (pgm and sodium are missing)
+## I filed a bug report here: https://github.com/travis-ci/travis-ci/issues/5701
+#if [ ! -f "$DEPFOLDER/lib/libzmq.a" ]; then 
+#    wget "$ZMQ_URL" -P /tmp &&
+#    tar -xf "/tmp/$ZMQ_NAME.tar.gz" -C /tmp &&
+#    pushd /tmp/$ZMQ_NAME &&
+#    ./autogen.sh &&
+#    ./configure --enable-static --enable-shared --prefix="$DEPFOLDER" --without-libsodium --without-pgm --without-documentation &&
+#    make &&
+#    make install &&
+#    popd; 
+#    rm -rf /tmp/$ZMQ_NAME /tmp/$ZMQ_NAME.tar.gz
+#fi
+#
+## install czmq from source
+## since czmq is not distributed in Ubuntu.
+## the LDFLAGS is necessary, because of a bug: https://github.com/zeromq/czmq/issues/1323
+## the CFLAGS is necessary, because we need to unset NDEBUG: https://github.com/zeromq/czmq/issues/1519
+#if [ ! -f "$DEPFOLDER/lib/libczmq.a" ]; then 
+#    wget "$CZMQ_URL" -P /tmp &&
+#    tar -xf "/tmp/v$CZMQ_VERSION.tar.gz" -C /tmp &&
+#    pushd /tmp/czmq-$CZMQ_VERSION &&
+#    ./autogen.sh &&
+#    ./configure --enable-static --enable-shared --prefix="$DEPFOLDER" --with-libzmq="$DEPFOLDER" &&
+#    make CFLAGS="" LDFLAGS="-lpthread" &&
+#    make install &&
+#    popd; 
+#    rm -rf /tmp/czmq-$CZMQ_VERSION /tmp/v$CZMQ_VERSION.tar.gz
+#fi
+#
 
 # install mCRL2
 #if [ ! -f "$DEPFOLDER/lib/libmcrl2_core.a" ]; then 
@@ -173,7 +174,7 @@ export SPOTCFLAGS="-I$ROOTDIR/install_dir/local/include/ $SPOTCFLAGS"
 export PKG_CONFIG_PATH="$ROOTDIR/install_dir/usr/local/lib/pkgconfig/:$ROOTDIR/dep_dir/lib/pkgconfig/:$ROOTDIR/dep_dir/lib64/pkgconfig/"
 
 ./ltsminreconf &&
-./configure --prefix=$IFOLDER --with-viennacl="$DEPFOLDER/include" --without-scoop --disable-sylvan --without-mcrl --without-mcrl2 --disable-opaal --without-prob --disable-pnml --without-spins  --disable-dist --without-doxygen $CONFIGURE_WITH
+./configure --prefix=$IFOLDER --with-viennacl="$DEPFOLDER/include" --without-scoop --disable-sylvan --without-mcrl --without-mcrl2 --disable-opaal --disable-prob --without-pnml --without-spins  --disable-dist --without-doxygen $CONFIGURE_WITH
 
 
 make LDFLAGS="-L$DEPFOLDER/static-libs -L$DEPFOLDER/lib/ -L$DEPFOLDER/lib64/ -L$ROOTDIR/install_dir/local/lib/ -static-libgcc -static-libstdc++"
@@ -186,6 +187,7 @@ make install
 export distname="ltsmin-$TRAVIS_TAG-$TRAVIS_OS_NAME" 
 
 export LTSMIN_VERSION=$(grep "PACKAGE_VERSION" src/hre/config.h | cut -d" " -f3 | cut -d\" -f2) 
+
 # mv "ltsmin-$LTSMIN_VERSION.tar.gz" "ltsmin-$TRAVIS_TAG-source.tgz";
 #    cp  "ltsmin-$TRAVIS_TAG-source.tgz" ../website/ltsmin-
 
