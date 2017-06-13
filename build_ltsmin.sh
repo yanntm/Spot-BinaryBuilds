@@ -43,25 +43,27 @@ export MAKEFLAGS=-j2
 
 # export necessary variables
 # bin
-export PATH=$DEPFOLDER/bin:$HOME/ProB:$PATH
+export PATH=$DEPFOLDER/bin:$PATH
 # include    
 export C_INCLUDE_PATH="$DEPFOLDER/include:$C_INCLUDE_PATH"
 # lib (linux)
-export LD_LIBRARY_PATH="$DEPFOLDER/lib:$HOME/ProB/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$DEPFOLDER/lib:$LD_LIBRARY_PATH"
 
 # install Sylvan from source
-if [ ! -f "$DEPFOLDER/lib64/libsylvan.a" ]; then
-    mkdir -p sylvan && cd sylvan &&
-    wget --progress=dot:mega "$SYLVAN_URL" &&
-    tar -xf "v$SYLVAN_VERSION.tar.gz" &&
-    cd sylvan-$SYLVAN_VERSION &&
-    mkdir -p build &&
-    cd build &&
-    cmake .. -DBUILD_SHARED_LIBS=OFF -DSYLVAN_BUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX="$DEPFOLDER" &&
-    make &&
-    make install &&
-    cd ../../..; 
-fi
+#if [ ! -f "$DEPFOLDER/lib64/libsylvan.a" ]; then
+#    mkdir -p sylvan && cd sylvan &&
+#    wget --progress=dot:mega "$SYLVAN_URL" &&
+#    tar -xf "v$SYLVAN_VERSION.tar.gz" &&
+#    cd sylvan-$SYLVAN_VERSION &&
+#    mkdir -p build &&
+#    cd build &&
+#    cmake .. -DBUILD_SHARED_LIBS=OFF -DSYLVAN_BUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX="$DEPFOLDER" &&
+#    make &&
+#    make install &&
+#    cd ../../..; 
+#fi
+#
+
     
 # install zmq from source, since libzmq3-dev in apt is missing dependencies for a full static LTSmin build (pgm and sodium are missing)
 # I filed a bug report here: https://github.com/travis-ci/travis-ci/issues/5701
@@ -74,6 +76,7 @@ if [ ! -f "$DEPFOLDER/lib/libzmq.a" ]; then
     make &&
     make install &&
     popd; 
+    rm -rf /tmp/$ZMQ_NAME /tmp/$ZMQ_NAME.tar.gz
 fi
 
 # install czmq from source
@@ -89,6 +92,7 @@ if [ ! -f "$DEPFOLDER/lib/libczmq.a" ]; then
     make CFLAGS="" LDFLAGS="-lpthread" &&
     make install &&
     popd; 
+    rm -rf /tmp/$CZMQ_NAME /tmp/v$CZMQ_VERSION.tar.gz
 fi
 
 # install mCRL2
@@ -96,13 +100,6 @@ fi
 #    wget "$MCRL2_URL" -P "$DEPFOLDER" &&    
 #    tar -xf "$DEPFOLDER/$MCRL2_NAME" -C "$DEPFOLDER"; 
 #fi
-
-    
-# install ProB
-if [ ! -f "$HOME/ProB/probcli" ]; then
-    wget "$PROB_URL" -P /tmp && 
-    tar -xf "/tmp/$PROB_NAME" -C "$HOME"; 
-fi
 
   # install Divine2
 #if [ ! -f "$DEPFOLDER/bin/divine" ]; then
@@ -112,11 +109,14 @@ fi
 
 
   
-  # install ViennaCL on linux
-if [ ! -d "$DEPFOLDER/include/viennacl" -a "$TRAVIS_OS_NAME" = "linux" ]; then
+  # install ViennaCL 
+# filter on linux :
+# -a "$TRAVIS_OS_NAME" = "linux"
+if [ ! -d "$DEPFOLDER/include/viennacl" ]; then
     wget "$VIENNACL_URL" -P /tmp &&
     tar xf "/tmp/$VIENNACL_NAME.tar.gz" -C /tmp &&
     cp -R "/tmp/$VIENNACL_NAME/viennacl" "$DEPFOLDER/include"; 
+    rm -rf /tmp/$VIENNACL_NAME.tar.gz /tmp/$VIENNACL_NAME
 fi
 
 # Move static libraries to a special folder 
@@ -160,11 +160,22 @@ popd
 mkdir ltsmin
 cd ltsmin
 git clone https://github.com/utwente-fmt/ltsmin.git --branch next --single-branch .
+cd ltl2ba
+git clone https://github.com/utwente-fmt/ltl2ba.git --branch master --single-branch .
+cd ..
+
+
 
 # CPPFLAGS='-I%system.pkg64.libboost.path%/include' LDFLAGS='-L%system.pkg64.libboost.path%/lib' VALGRIND=false
+
+export SPOTCFLAGS="-I$ROOTDIR/install_dir/local/include/ $SPOTCFLAGS"
+export PKG_CONFIG_PATH="$ROOTDIR/install_dir/usr/local/lib/pkgconfig/:$ROOTDIR/dep_dir/lib/pkgconfig/:$ROOTDIR/dep_dir/lib64/pkgconfig/"
+
 ./ltsminreconf &&
-./configure --prefix=$IFOLDER --with-viennacl="$DEPFOLDER/include" --without-scoop $CONFIGURE_WITH
-make LDFLAGS="-L$DEPFOLDER/static-libs -L$DEPFOLDER/lib/ -L$DEPFOLDER/lib64/ -static-libgcc -static-libstdc++"
+./configure --prefix=$IFOLDER --with-viennacl="$DEPFOLDER/include" --without-scoop --disable-sylvan --without-mcrl --without-mcrl2 --disable-opaal --without-prob --disable-pnml --without-spins  --disable-dist --without-doxygen $CONFIGURE_WITH
+
+
+make LDFLAGS="-L$DEPFOLDER/static-libs -L$DEPFOLDER/lib/ -L$DEPFOLDER/lib64/ -L$ROOTDIR/install_dir/local/lib/ -static-libgcc -static-libstdc++"
 
 make install 
 # cp "$DEPFOLDER/bin/divine" /tmp/dist/bin &&
@@ -181,7 +192,7 @@ pushd $ROOTDIR
 
 pwd
 ls 
-cd lts_install_dir/bin ; mkdir pp ; mv pins2* pp/ ; mv ltl2* pp/ ; \rm * ; mv pp/* . ; rm -rf pp/ ; cd ../..
+cd lts_install_dir/bin ; mkdir pp ; \rm *-dist *-sym pins2torx ; mv pins2* pp/ ; mv ltl2* pp/ ; \rm * ; mv pp/* . ; rm -rf pp/ ; for i in * ; do strip $i ; done; cd ../..
 tar czvf ltsmin_linux_64.tar.gz lts_install_dir/
 cp ltsmin_linux_64.tar.gz website/
 ls
