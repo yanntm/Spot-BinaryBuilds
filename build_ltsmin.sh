@@ -176,9 +176,10 @@ pushd $ROOTDIR
 
 pwd
 ls 
+cd lts_install_dir/bin ; mkdir pp ; mv pins2* pp/ ; mv ltl2* pp/ ; \rm * ; mv pp/* . ; rm -rf pp/ ; cd ../..
 tar czvf ltsmin_linux_64.tar.gz lts_install_dir/
 cp ltsmin_linux_64.tar.gz website/
 ls
-ls website
+ls -lah website
 
 popd
