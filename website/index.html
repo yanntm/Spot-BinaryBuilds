@@ -1,28 +1,30 @@
-<h1>Download page for ITS Tools dependencies </h1>
+<h1>Download page for Binary Spot package </h1>
 
 <p>
 This page hosts content built on : DATETIME.
 </p>
 
 <p>
+Download the latest Spot binaries for linux x64 : <a href="./spot_linux_64.tar.gz"> Spot for Linux latest</a>. <br/>
+</p>
+
+<p>
+Download the latest Spot binaries for Windows x64 : <a href="./spot_linux_64.tar.gz"> Spot for Windows latest</a>. <br/>
+</p>
+
+<p>
 This page hosts content regularly rebuilt using the continuous integration service Travis.
-This page hosts these dependencies for ITS-Tools : 
+This page hosts the latest build of Spot : 
 <ul>
 <li>Spot (see <a href="https://spot.lrde.epita.fr/">Spot homepage</a>)</li>
-<li>LTSmin (see <a href="http://fmt.cs.utwente.nl/tools/ltsmin/">LTSmin homepage</a>)</li>
 </ul>
-These artifacts are not necessarily very portable, they're used in our build system and are specific to a docker hosted on travis-ci.
+These artifacts are not very portable, they're used in our build system, so are specific to the versions (gcc, glibc...) that live on travis-ci (Linux, OSX targets) or AppVeyor (Windows target).
+The build is configured to only build what we depend upon, we don't aim to build all of Spot in this build.
 </p>
 <p>
-Both of these software are free open source packages. 
+This software is free open source under GPL, visit Spot's homepage for license information. 
+</p>
+
+<p>
 Please see the sources of this project to see exactly how we build them on Travis and AppVeyor.
-</p>
-
-<p>
-Download the latest Spot binaries for linux x64 : <a href="./spot_linux_64.tar.gz"> Spot for Linux latest</a>. <br/>
-Note that this executable is statically linked and should work without any further installation.
-</p>
-
-<p>
-Download the latest artifacts here for LTSmin : <a href="./ltsmin_linux_64.tar.gz"> LTSmin latest artifacts for linux </a>. <br/>
 </p>

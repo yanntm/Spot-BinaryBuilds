@@ -8,9 +8,6 @@ build_script :
  - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; ./build_spot.sh && mv website/spot_linux.tar.gz website/spot_windows.tar.gz"'
  - DIR
 
-# - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; 7z a -tzip windows.zip usr/ "'
-# SHELL=%BASH_PATH%
- 
  
 environment :
  MSYSTEM: MINGW64 
