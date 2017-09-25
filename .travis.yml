@@ -1,7 +1,6 @@
 dist: trusty
 sudo: false
-
-language : python
+language: cpp
 
 matrix:
   include:
