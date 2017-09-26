@@ -45,8 +45,8 @@ before_script:
 script :
   - ./tag.sh
   - ./build_spot.sh
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mv website/spot_linux.tar.gz website/spot_osx.tar.gz ; fi
   - ls -lah website/
-  - ls -R 
 
 deploy:
   provider: pages
