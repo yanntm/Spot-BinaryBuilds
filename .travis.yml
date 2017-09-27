@@ -19,13 +19,6 @@ matrix:
       compiler: gcc
       env: GCCVER='7' CXX_COMPILER='g++-7' C_COMPILER='gcc-7'
 
-
-addons:
-  apt:
-    sources: ['ubuntu-toolchain-r-test']  
-    packages: ['g++-7', 'gcc-7', 'expat', 'libgmp-dev', 'libpopt-dev']
-    
-    
 before_script:
 ## OSX
   - cd ${TRAVIS_BUILD_DIR} 
