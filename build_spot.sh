@@ -1,9 +1,13 @@
 #! /bin/bash
 
-wget --progress=dot:mega --no-check-certificate https://teamcity.lrde.epita.fr/guestAuth/repository/download/bt18/.lastSuccessful/spot-snapshot.tar.gz
+export SPOTVER=2.5.3
 
-tar zxf spot-snapshot.tar.gz
-rm spot-snapshot.tar.gz
+wget --progress=dot:mega --no-check-certificate http://www.lrde.epita.fr/dload/spot/spot-$SPOTVER.tar.gz
+
+# https://teamcity.lrde.epita.fr/guestAuth/repository/download/bt18/.lastSuccessful/spot-snapshot.tar.gz
+
+tar zxf spot-$SPOTVER.tar.gz
+rm spot-$SPOTVER.tar.gz
 
 mkdir install_dir
 mkdir install_dir/usr
