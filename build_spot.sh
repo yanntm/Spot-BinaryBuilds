@@ -1,6 +1,6 @@
 #! /bin/bash
 
-export SPOTVER=2.8.1
+export SPOTVER=2.8.3
 
 wget --progress=dot:mega --no-check-certificate http://www.lrde.epita.fr/dload/spot/spot-$SPOTVER.tar.gz
 
