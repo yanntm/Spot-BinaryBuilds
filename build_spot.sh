@@ -36,9 +36,14 @@ if [ ! -d usr/local ] ; then
 fi
 
 cd usr/local/
+
+cd bin
+strip ltlfilt
+mv ltlfilt ../../../../website/
+cd ..
+
 \rm -rf bin/ share/ lib64/
 cd ../..
-
 
 ls -lah
 
