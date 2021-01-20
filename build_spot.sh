@@ -17,7 +17,12 @@ cd install_dir/usr/local/
 export IFOLDER=$(pwd)
 cd ../../../spot-*
 
-./configure -C VALGRIND=false --without-included-lbtt --disable-devel --disable-shared --disable-python --prefix=$IFOLDER
+./configure -C VALGRIND=false --without-included-lbtt --disable-devel --disable-shared --disable-python --prefix=$IFOLDER 
+
+# hack the -all-static flag
+cd bin
+sed -i 's/LDFLAGS = /LDFLAGS = -all-static/g' Makefile
+cd ..
 
 # CPPFLAGS='-I%system.pkg64.libboost.path%/include' LDFLAGS='-L%system.pkg64.libboost.path%/lib' VALGRIND=false
 
