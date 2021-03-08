@@ -45,6 +45,8 @@ cd usr/local/
 cd bin
 strip ltlfilt
 mv ltlfilt ../../../../website/
+strip ltl2tgba
+mv ltl2tgba ../../../../website/
 cd ..
 
 \rm -rf bin/ share/ lib64/
