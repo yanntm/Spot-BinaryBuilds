@@ -47,6 +47,8 @@ strip ltlfilt
 mv ltlfilt ../../../../website/
 strip ltl2tgba
 mv ltl2tgba ../../../../website/
+strip autfilt
+mv autfilt ../../../../website/
 cd ..
 
 \rm -rf bin/ share/ lib64/
