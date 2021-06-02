@@ -1,0 +1,31 @@
+name: OSX Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v2.3.4
+    - name: Install packages
+      run: brew install gcc@9 autoconf automake libtool expat popt ;    
+    - name: tag version date
+      run: /bin/sh ./tag.sh
+    - name: build spot
+      run: export AR='gcc-ar-9' ; export NM='gcc-nm-9' ; export RANLIB='gcc-ranlib-9' ; export CXX='g++-9' ; export CC='gcc-9' ; ./build_spot.sh 
+    - name: rename artifact
+      run: mv website/spot_linux.tar.gz website/spot_osx.tar.gz
+    - name: list files
+      run: ls -lah website/ 
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.3
+      with:
+          branch: osx  # The branch the action should deploy to.
+          folder: website/  # The folder the action should deploy.
+          clean: true # Automatically remove deleted files from the deploy branch
+          single-commit: true 
