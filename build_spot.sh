@@ -1,10 +1,9 @@
 #! /bin/bash
 
-export SPOTVER=2.10.4
+export SPOTVER=2.10.4.dev
 
-wget --progress=dot:mega --no-check-certificate http://www.lrde.epita.fr/dload/spot/spot-$SPOTVER.tar.gz
-
-# https://teamcity.lrde.epita.fr/guestAuth/repository/download/bt18/.lastSuccessful/spot-snapshot.tar.gz
+#wget --progress=dot:mega --no-check-certificate http://www.lrde.epita.fr/dload/spot/spot-$SPOTVER.tar.gz
+wget --progress=dot:mega --no-check-certificate https://www.lrde.epita.fr/~adl/spot-2.10.4.dev.tar.gz
 
 tar zxf spot-$SPOTVER.tar.gz
 rm spot-$SPOTVER.tar.gz
