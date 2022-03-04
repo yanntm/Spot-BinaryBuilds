@@ -25,7 +25,7 @@ jobs:
     - name: get libITS
       run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/Spot-BinaryBuilds/Spot-BinaryBuilds ; ./build_spot.sh && mv website/spot_linux.tar.gz website/spot_windows.tar.gz ; cp -r website/ site/"
     - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
-      uses: actions/upload-artifact@v2.3.1
+      uses: actions/upload-artifact@v3
       with:
         name: site
         path: site/
