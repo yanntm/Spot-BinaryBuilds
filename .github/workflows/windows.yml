@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     
-    runs-on: windows-2019
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v3
@@ -21,7 +21,7 @@ jobs:
         java-version: '11'
         check-latest: true    
     - name: install packages
-      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman --noconfirm -S gmp-devel ; pacman --noconfirm -S  p7zip"
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman --noconfirm -S --needed base-devel mingw-w64-x86_64-toolchain ; pacman --noconfirm -S gmp-devel ; pacman --noconfirm -S  p7zip"
     - name: get libITS
       run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/Spot-BinaryBuilds/Spot-BinaryBuilds ; ./build_spot.sh && mv website/spot_linux.tar.gz website/spot_windows.tar.gz ; cp -r website/ site/"
     - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
