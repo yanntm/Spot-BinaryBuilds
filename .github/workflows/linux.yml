@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2.4.0
+    - uses: actions/checkout@v3
     - name: Install packages
       run: sudo apt-get clean ; sudo apt-get update ; sudo apt-get install expat libgmp-dev libpopt-dev 
     - name: tag version date
@@ -21,7 +21,7 @@ jobs:
     - name: list built files
       run: ls -lah website/
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.2.2
+      uses: JamesIves/github-pages-deploy-action@v4.2.5
       with:
           branch: gh-pages # The branch the action should deploy to.
           folder: website/ # The folder the action should deploy.
