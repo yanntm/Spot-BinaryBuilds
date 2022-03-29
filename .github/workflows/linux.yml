@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2.4.0
     - name: Install packages
-      run: sudo apt-get install expat libgmp-dev libpopt-dev 
+      run: sudo apt-get clean ; sudo apt-get update ; sudo apt-get install expat libgmp-dev libpopt-dev 
     - name: tag version date
       run: ./tag.sh
     - name: build spot
