@@ -17,7 +17,7 @@ export IFOLDER=$(pwd)
 cd ../../../spot-*
 
 # From Etienne Renault : allow more acceptance
-./configure -C VALGRIND=false --without-included-lbtt --disable-devel --disable-shared --disable-python --prefix=$IFOLDER --enable-max-accsets=64
+./configure -C VALGRIND=false --without-included-lbtt --disable-devel --disable-shared --prefix=$IFOLDER --enable-max-accsets=64
 
 # hack the -all-static flag
 cd bin
