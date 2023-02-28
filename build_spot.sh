@@ -1,6 +1,10 @@
 #! /bin/bash
 
-export SPOTVER=2.11.1.dev
+# Minato version
+# export SPOTVER=2.11.1.dev
+# restrict/relax version
+export SPOTVER=2.10.4.dev
+
 
 #wget --progress=dot:mega --no-check-certificate http://www.lrde.epita.fr/dload/spot/spot-$SPOTVER.tar.gz
 wget --progress=dot:mega --no-check-certificate https://www.lrde.epita.fr/~adl/spot-$SPOTVER.tar.gz
