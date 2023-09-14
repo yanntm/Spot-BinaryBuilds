@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Minato version
-export SPOTVER=2.11.1.dev
+export SPOTVER=2.11.6.dev
 # restrict/relax version
 # export SPOTVER=2.10.4.dev
 
