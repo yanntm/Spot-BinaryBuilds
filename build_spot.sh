@@ -44,6 +44,7 @@ if [ ! -d usr/local ] ; then
     \rm -r mingw64
 fi
 
+
 cd usr/local/
 
 cd bin
