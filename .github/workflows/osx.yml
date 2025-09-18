@@ -8,16 +8,16 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-13
     
     steps:
     - uses: actions/checkout@v4
     - name: Install packages
-      run: brew install gcc@11 autoconf automake libtool expat popt ;    
+      run: brew install gcc@13 autoconf automake libtool expat popt ;    
     - name: tag version date
       run: /bin/sh ./tag.sh
     - name: build spot
-      run: export AR='gcc-ar-11' ; export NM='gcc-nm-11' ; export RANLIB='gcc-ranlib-11' ; export CXX='g++-11' ; export CC='gcc-11' ; ./build_spot.sh 
+      run: export AR='gcc-ar-13' ; export NM='gcc-nm-13' ; export RANLIB='gcc-ranlib-13' ; export CXX='g++-13' ; export CC='gcc-13' ; ./build_spot.sh 
     - name: rename artifact
       run: mv website/spot_linux.tar.gz website/spot_osx.tar.gz
     - name: list files
