@@ -10,9 +10,8 @@ export SPOTVER=2.14.5.dev
 # restrict/relax version
 # export SPOTVER=2.10.4.dev
 
-
-wget --progress=dot:mega --no-check-certificate http://www.lrde.epita.fr/dload/spot/spot-$SPOTVER.tar.gz
-#wget --progress=dot:mega --no-check-certificate https://www.lrde.epita.fr/~adl/spot-$SPOTVER.tar.gz
+#wget --progress=dot:mega --no-check-certificate http://www.lrde.epita.fr/dload/spot/spot-$SPOTVER.tar.gz
+wget --no-check-certificate http://www.lre.epita.fr/~adl/spot-$SPOTVER.tar.gz
 
 tar zxf spot-$SPOTVER.tar.gz
 rm spot-$SPOTVER.tar.gz
