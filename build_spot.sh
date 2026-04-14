@@ -1,7 +1,12 @@
 #! /bin/bash
 
 # Minato version
-export SPOTVER=2.14.1
+#export SPOTVER=2.14.1
+
+# New dev version with "auto" mode for knowledge integration
+export SPOTVER=2.14.5.dev
+
+
 # restrict/relax version
 # export SPOTVER=2.10.4.dev
 
