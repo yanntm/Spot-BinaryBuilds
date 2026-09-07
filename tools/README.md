@@ -10,6 +10,7 @@ beside `ltl2tgba`, `autfilt` and `ltlfilt`.
 ```
 spotutil stutter-states FILE.hoa    # was autstates.py
 spotutil sensitivity FILE.hoa       # was senseclsl.py
+spotutil inf-stutter FILE.hoa       # was three Spot processes per state in computeInfStutter
 ```
 
 * `stutter-states`: the stutter-invariant states of the automaton
@@ -22,6 +23,17 @@ spotutil sensitivity FILE.hoa       # was senseclsl.py
   complement(aut)` empty), and to stuttering (both); prints the header line
   `#is_stutter,is_lengthening_ins,is_shortening_ins` then the three flags, as
   `SpotRunner.analyzeCLSL` reads them.
+
+* `inf-stutter`: for each state `q`, the letters `x` such that the word
+  `x x x ...` is accepted from `q` (a one-state word automaton in product with
+  the automaton read from `q`, an emptiness check per letter, at most 2^14
+  letters else status 3 and the caller falls back); the answer is an HOA with
+  the same states and atomic propositions where `q` carries one self-loop
+  labelled by the disjunction of those letters, or no edge. ITS-Tools'
+  `SpotRunner.computeInfStutter` used to run `autfilt --small` on the
+  automaton restarted at each state, `ltl2tgba` on the stuttering formula
+  and `autfilt --product-and` between them, three processes per state per
+  formula.
 
 Output formats are those of the scripts, byte for byte where ITS-Tools
 parses them. Options are CLI11 (`CLI11.hpp`, vendored with its licence).

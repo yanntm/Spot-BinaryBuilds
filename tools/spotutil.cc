@@ -13,6 +13,14 @@
 //     Line 2: three 0/1 flags: the language is insensitive to stuttering
 //     (both), to lengthening (closure against the complement is empty), to
 //     shortening (sl against the complement is empty).
+//
+//   spotutil inf-stutter FILE.hoa
+//     For each state q of the automaton, the letters x such that the word
+//     x x x ... is accepted from q: an automaton in HOA with the same states
+//     and atomic propositions, where state q carries one self-loop labelled
+//     by the disjunction of those letters, or no edge when there is none
+//     (ITS-Tools' computeInfStutter, which ran three Spot processes per state
+//     for this: a simplification, the stuttering formula, their product).
 
 #include <iostream>
 #include <string>
@@ -25,6 +33,7 @@
 #include <spot/twaalgos/product.hh>
 #include <spot/twaalgos/stutter.hh>
 #include <spot/twa/bddprint.hh>
+#include <spot/twa/twagraph.hh>
 
 #include "CLI11.hpp"
 
@@ -67,6 +76,51 @@ int sensitivity (const std::string &file)
   return 0;
 }
 
+/** Beyond this many atomic propositions the letters are too many to enumerate: status 3, the caller falls back. */
+constexpr size_t MAX_APS = 14;
+
+int infStutter (const std::string &file)
+{
+  spot::twa_graph_ptr aut = load (file);
+  spot::bdd_dict_ptr dict = aut->get_dict ();
+  const std::vector<spot::formula> &aps = aut->ap ();
+  if (aps.size () > MAX_APS) {
+    std::cerr << "spotutil: " << aps.size () << " atomic propositions, too many letters to enumerate" << std::endl;
+    return 3;
+  }
+  std::vector<int> vars;
+  for (const spot::formula &ap : aps) vars.push_back (dict->var_map.at (ap));
+  unsigned n = aut->num_states ();
+  spot::twa_graph_ptr res = spot::make_twa_graph (dict);
+  res->copy_ap_of (aut);
+  res->set_acceptance (0, spot::acc_cond::acc_code::t ());
+  res->new_states (n);
+  res->set_init_state (aut->get_init_state_number ());
+  size_t letters = size_t (1) << aps.size ();
+  for (unsigned q = 0; q < n; ++q) {
+    // the automaton read from q
+    spot::twa_graph_ptr aq = spot::make_twa_graph (aut, spot::twa::prop_set::all ());
+    aq->set_init_state (q);
+    bdd accepted = bddfalse;
+    for (size_t m = 0; m < letters; ++m) {
+      bdd x = bddtrue;
+      for (size_t i = 0; i < vars.size (); ++i) x &= ((m >> i) & 1) ? bdd_ithvar (vars[i]) : bdd_nithvar (vars[i]);
+      // the word x x x ...: one state, one accepting self-loop, acceptance "t" so the product keeps aq's
+      spot::twa_graph_ptr wx = spot::make_twa_graph (dict);
+      wx->copy_ap_of (aut);
+      wx->set_acceptance (0, spot::acc_cond::acc_code::t ());
+      unsigned s0 = wx->new_state ();
+      wx->set_init_state (s0);
+      wx->new_edge (s0, s0, x);
+      if (!spot::product (aq, wx)->is_empty ()) accepted |= x;
+    }
+    if (accepted != bddfalse) res->new_edge (q, q, accepted);
+  }
+  spot::print_hoa (std::cout, res, "t");
+  std::cout << '\n';
+  return 0;
+}
+
 } // namespace
 
 int main (int argc, char **argv)
@@ -78,7 +132,10 @@ int main (int argc, char **argv)
   st->add_option ("file", file, "Automaton in HOA format")->required ()->check (CLI::ExistingFile);
   CLI::App *se = app.add_subcommand ("sensitivity", "Insensitivity to stuttering, lengthening and shortening.");
   se->add_option ("file", file, "Automaton in HOA format")->required ()->check (CLI::ExistingFile);
+  CLI::App *is = app.add_subcommand ("inf-stutter", "Per state, the letters whose infinite repetition is accepted, as an HOA of self-loops.");
+  is->add_option ("file", file, "Automaton in HOA format")->required ()->check (CLI::ExistingFile);
   CLI11_PARSE (app, argc, argv);
   if (st->parsed ()) return stutterStates (file);
+  if (is->parsed ()) return infStutter (file);
   return sensitivity (file);
 }
