@@ -36,6 +36,6 @@ cmake -S tools -B tools/build -DCMAKE_BUILD_TYPE=Release [-DSPOT_ROOT=/path/to/s
 cmake --build tools/build
 ```
 
-Linked with `-static` on Linux (`-DSPOTUTIL_STATIC=OFF` to disable). The CI
+Built as C++20 (Spot 2.16 headers need it). Linked with `-static` on Linux (`-DSPOTUTIL_STATIC=OFF` to disable). The CI
 runs this after `make install` and puts `spotutil` in `website/` with the
 other binaries; ITS-Tools fetches it as `bin/spotutil-linux64`.

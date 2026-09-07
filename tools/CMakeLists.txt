@@ -7,7 +7,7 @@ set(SPOT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../install_dir/usr/local" CACHE PATH 
 option(SPOTUTIL_STATIC "Link the executable statically (Linux)" ON)
 
 add_executable(spotutil spotutil.cc)
-set_target_properties(spotutil PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+set_target_properties(spotutil PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
 target_include_directories(spotutil PRIVATE ${SPOT_ROOT}/include ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_directories(spotutil PRIVATE ${SPOT_ROOT}/lib)
 target_link_libraries(spotutil PRIVATE spot bddx)
