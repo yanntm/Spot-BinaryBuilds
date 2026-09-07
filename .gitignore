@@ -2,3 +2,4 @@
 /install_dir/
 /*.tar.gz
 **/*~
+tools/build/

@@ -60,6 +60,15 @@ strip autfilt
 mv autfilt ../../../../website/
 cd ..
 
+# our own tool over the Spot C++ API (tools/README.md), static on Linux, beside the Spot binaries
+export SPOTPREFIX=$(pwd)
+cd ../../..
+cmake -S tools -B tools/build -DCMAKE_BUILD_TYPE=Release -DSPOT_ROOT=$SPOTPREFIX
+cmake --build tools/build
+strip tools/build/spotutil
+mv tools/build/spotutil website/
+cd install_dir/usr/local
+
 \rm -rf bin/ share/ lib64/
 cd ../..
 
