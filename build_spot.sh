@@ -60,13 +60,16 @@ strip autfilt
 mv autfilt ../../../../website/
 cd ..
 
-# our own tool over the Spot C++ API (tools/README.md), static on Linux, beside the Spot binaries
+# our own tool over the Spot C++ API (tools/README.md), static on Linux, beside the Spot binaries;
+# skipped where cmake is missing (the Windows job), the tool being for the Linux product
 export SPOTPREFIX=$(pwd)
 cd ../../..
-cmake -S tools -B tools/build -DCMAKE_BUILD_TYPE=Release -DSPOT_ROOT=$SPOTPREFIX
-cmake --build tools/build
-strip tools/build/spotutil
-mv tools/build/spotutil website/
+if command -v cmake > /dev/null ; then
+  cmake -S tools -B tools/build -DCMAKE_BUILD_TYPE=Release -DSPOT_ROOT=$SPOTPREFIX
+  cmake --build tools/build
+  strip tools/build/spotutil
+  mv tools/build/spotutil website/
+fi
 cd install_dir/usr/local
 
 \rm -rf bin/ share/ lib64/
