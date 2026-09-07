@@ -1,17 +1,11 @@
 #! /bin/bash
 
-# Minato version
-#export SPOTVER=2.14.1
+# Spot 2.16 (2026-09-03): the knowledge integration of the 2.14.5.dev snapshot we built until then
+# (--given-formula, --given-automaton, --given-strategy with auto-small and auto-si) is released in it.
+# A dev tarball from the author's page would be fetched from http://www.lre.epita.fr/~adl/spot-$SPOTVER.tar.gz
+export SPOTVER=2.16
 
-# New dev version with "auto" mode for knowledge integration
-export SPOTVER=2.14.5.dev
-
-
-# restrict/relax version
-# export SPOTVER=2.10.4.dev
-
-#wget --progress=dot:mega --no-check-certificate http://www.lrde.epita.fr/dload/spot/spot-$SPOTVER.tar.gz
-wget --no-check-certificate http://www.lre.epita.fr/~adl/spot-$SPOTVER.tar.gz
+wget --no-check-certificate http://www.lre.epita.fr/dload/spot/spot-$SPOTVER.tar.gz
 
 tar zxf spot-$SPOTVER.tar.gz
 rm spot-$SPOTVER.tar.gz
