@@ -3,6 +3,3 @@
 /*.tar.gz
 **/*~
 tools/build/
-python/build/
-python/dist/
-python/__pycache__/
