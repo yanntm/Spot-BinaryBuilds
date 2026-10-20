@@ -18,6 +18,11 @@ jobs:
       run: ./tag.sh
     - name: build spot
       run: ./build_spot.sh
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.14'
+    - name: build Python bindings
+      run: ./build_py.sh
     - name: list built files
       run: ls -lah website/
     - name: Deploy to GitHub Pages

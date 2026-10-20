@@ -20,6 +20,11 @@ jobs:
       run: export AR='gcc-ar-13' ; export NM='gcc-nm-13' ; export RANLIB='gcc-ranlib-13' ; export CXX='g++-13' ; export CC='gcc-13' ; ./build_spot.sh 
     - name: rename artifact
       run: mv website/spot_linux.tar.gz website/spot_osx.tar.gz
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.14'
+    - name: build Python bindings
+      run: ./build_py.sh
     - name: list files
       run: ls -lah website/ 
     - name: Deploy to GitHub Pages
