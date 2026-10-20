@@ -109,7 +109,7 @@ def build_wheel(prefix: Path, source: Path, release: str, output: Path) -> Path:
         (metadata / "METADATA").write_text(
             "Metadata-Version: 2.4\nName: spot-runtime\n"
             f"Version: {version}\nSummary: Spot Python and CLI runtime with 64 acceptance sets\n"
-            "Requires-Python: >=3.10\nLicense-Expression: GPL-3.0-or-later\n"
+            "Requires-Python: >=3.14\nLicense-Expression: GPL-3.0-or-later\n"
             "License-File: licenses/COPYING\n"
             "Project-URL: Homepage, https://spot.lre.epita.fr\n"
             f"Project-URL: Source, https://www.lre.epita.fr/dload/spot/spot-{release}.tar.gz\n",

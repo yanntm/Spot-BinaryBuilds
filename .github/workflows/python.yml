@@ -14,12 +14,8 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     container: quay.io/pypa/manylinux_2_28_x86_64
-    strategy:
-      fail-fast: false
-      matrix:
-        python: ['310', '311', '312', '313', '314']
     env:
-      PYTHON: /opt/python/cp${{ matrix.python }}-cp${{ matrix.python }}/bin/python
+      PYTHON: /opt/python/cp314-cp314/bin/python
       BUILD_JOBS: '2'
     steps:
       - uses: actions/checkout@v4
@@ -43,24 +39,19 @@ jobs:
             timeout 15s python/build/check-env/bin/python -I python/smoke.py
       - uses: actions/upload-artifact@v4
         with:
-          name: spot-runtime-linux-x86_64-cp${{ matrix.python }}
+          name: spot-runtime-linux-x86_64-cp314
           path: python/dist/*.whl
           if-no-files-found: error
 
   macos:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-15, macos-15-intel]
-        python: ['3.10', '3.11', '3.12', '3.13', '3.14']
+    runs-on: macos-15
     env:
       BUILD_JOBS: '2'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python }}
+          python-version: '3.14'
       - name: Build prerequisites
         run: |
           brew install gmp coreutils
@@ -78,6 +69,6 @@ jobs:
             gtimeout 15s python/build/check-env/bin/python -I python/smoke.py
       - uses: actions/upload-artifact@v4
         with:
-          name: spot-runtime-${{ matrix.os }}-py${{ matrix.python }}
+          name: spot-runtime-macos-arm64-cp314
           path: python/dist/*.whl
           if-no-files-found: error

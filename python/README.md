@@ -8,7 +8,9 @@ remain `spot` and `buddy`. It is separate from the static ITS-tools build.
 The release defaults to the SPOTVER assignment in `../build_spot.sh`.
 SPOT_VERSION and SPOT_SOURCE_URL can select a specific release/source archive.
 The Python interpreter, OS and architecture determine the wheel compatibility
-tags. The supported builders are Linux and macOS with CPython 3.10 or later.
+tags. Published wheels require CPython 3.14. CI runs one Linux x86-64 build
+and one macOS arm64 build. Other interpreters and architectures require a
+local build.
 The Windows static-tool workflow is independent; these wheels do not claim
 Windows Python compatibility.
 
@@ -58,8 +60,8 @@ test cannot succeed by loading libraries from that prefix.
 
 The separate ../.github/workflows/python.yml workflow publishes wheel artifacts.
 It does not write website/ or deploy to the legacy publishing branches.
-Linux targets x86-64 with a manylinux_2_28 baseline. macOS has separate arm64
-and x86-64 jobs. The interpreter matrix is declared in that workflow.
+Linux targets x86-64 with a manylinux_2_28 baseline. macOS targets arm64.
+Both jobs use CPython 3.14.
 
 ## Source map
 
