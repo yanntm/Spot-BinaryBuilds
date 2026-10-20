@@ -1,0 +1,83 @@
+name: Python Runtime Wheels
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    container: quay.io/pypa/manylinux_2_28_x86_64
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['310', '311', '312', '313', '314']
+    env:
+      PYTHON: /opt/python/cp${{ matrix.python }}-cp${{ matrix.python }}/bin/python
+      BUILD_JOBS: '2'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build prerequisites
+        run: |
+          yum install -y gmp-devel
+          "$PYTHON" -m pip install wheel packaging auditwheel 'patchelf>=0.19.1'
+          echo "$(dirname "$PYTHON")" >> "$GITHUB_PATH"
+      - name: Build separate Python runtime
+        run: bash python/build.sh
+      - name: Bundle external libraries and tag portability
+        run: |
+          "$PYTHON" -m auditwheel repair --plat manylinux_2_28_x86_64 \
+            --wheel-dir python/dist python/build/wheels/*.whl
+      - name: Check fresh installed wheel without build prefix
+        run: |
+          "$PYTHON" -m venv python/build/check-env
+          python/build/check-env/bin/python -m pip install --no-deps python/dist/*.whl
+          for prefix in python/build/*/cp*/install; do mv "$prefix" "$prefix-hidden"; done
+          env -u PYTHONPATH -u LD_LIBRARY_PATH \
+            timeout 15s python/build/check-env/bin/python -I python/smoke.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spot-runtime-linux-x86_64-cp${{ matrix.python }}
+          path: python/dist/*.whl
+          if-no-files-found: error
+
+  macos:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, macos-15-intel]
+        python: ['3.10', '3.11', '3.12', '3.13', '3.14']
+    env:
+      BUILD_JOBS: '2'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Build prerequisites
+        run: |
+          brew install gmp coreutils
+          python -m pip install wheel packaging delocate
+      - name: Build separate Python runtime
+        run: PYTHON=python bash python/build.sh
+      - name: Bundle external libraries
+        run: delocate-wheel --require-archs="$(uname -m)" -w python/dist python/build/wheels/*.whl
+      - name: Check fresh installed wheel without build prefix
+        run: |
+          python -m venv python/build/check-env
+          python/build/check-env/bin/python -m pip install --no-deps python/dist/*.whl
+          for prefix in python/build/*/cp*/install; do mv "$prefix" "$prefix-hidden"; done
+          env -u PYTHONPATH -u DYLD_LIBRARY_PATH \
+            gtimeout 15s python/build/check-env/bin/python -I python/smoke.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spot-runtime-${{ matrix.os }}-py${{ matrix.python }}
+          path: python/dist/*.whl
+          if-no-files-found: error
