@@ -26,6 +26,11 @@ rm -rf "$work/source" "$work/wheels"
 mkdir -p "$work/source" "$work/wheels"
 tar -xzf "$archive" --strip-components=1 -C "$work/source"
 export enable_max_accsets=64
+# Release binaries: suppress debug generation and strip debug data at link time.
+export enable_debug=no
+export CFLAGS="${CFLAGS:-} -g0"
+export CXXFLAGS="${CXXFLAGS:-} -g0"
+export LDFLAGS="${LDFLAGS:-} -Wl,-S"
 export PYTHON_CPU_COUNT="${BUILD_JOBS:-2}"
 "$python_bin" -m pip wheel --no-deps --no-build-isolation \
     --wheel-dir "$work/wheels" "$work/source"
